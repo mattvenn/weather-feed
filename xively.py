@@ -1,25 +1,23 @@
 import mechanize
 import json
 import threading
-
+from apikey import xively_key
 
 class xively(threading.Thread):
 
     url_base = "http://api.xively.com/v2/feeds/"
     version = '1.0.0'
 
-    def __init__(self, feed_id, logging, keyfile="xively.key", timeout=5, uptime=False):
+    def __init__(self, feed_id, logging, timeout=5, uptime=False):
         threading.Thread.__init__(self)
 
-        # private key stored in a file
-        api_key = open(keyfile).readlines()[0].strip()
 
         self.feed_id = feed_id
         self.timeout = timeout
-        self.logger = logging.getLogger('xively')
+        self.logger = logging.getLogger(__name__)
 
         self.opener = mechanize.build_opener()
-        self.opener.addheaders = [('X-ApiKey', api_key)]
+        self.opener.addheaders = [('X-ApiKey', xively_key)]
         self.data = []
         self.payload = {}
 

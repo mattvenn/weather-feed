@@ -7,8 +7,9 @@ import datetime
 from xively import xively
 from post_data import cursive_data
 import logging
+from apikey import weather_key
 
-url = "http://api.openweathermap.org/data/2.5/weather?q=Bristol,uk&units=metric&APPID=031f081edce44ccc0acf6955712fbfc9"
+url = "http://api.openweathermap.org/data/2.5/weather?q=Bristol,uk&units=metric&APPID=" +  weather_key
 
 # fetch the url
 r = requests.get(url)
@@ -44,7 +45,7 @@ logging.basicConfig(level=logging.INFO)
 use_xively = True
 
 if use_xively:
-  xively_t = xively(feed_id, logging, timeout=xively_timeout, keyfile="api.key")
+  xively_t = xively(feed_id, logging, timeout=xively_timeout)
   xively_t.add_datapoint('wind',wind)
   xively_t.add_datapoint('temp',temp)
   xively_t.add_datapoint('clouds',clouds)
