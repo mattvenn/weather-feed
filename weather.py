@@ -8,7 +8,7 @@ from xively import xively
 from post_data import cursive_data
 import logging
 
-url = "http://api.openweathermap.org/data/2.5/weather?q=Bristol,uk&units=metric"
+url = "http://api.openweathermap.org/data/2.5/weather?q=Bristol,uk&units=metric&APPID=031f081edce44ccc0acf6955712fbfc9"
 
 # fetch the url
 r = requests.get(url)
@@ -40,17 +40,22 @@ with open('log.csv', 'a') as fh:
 feed_id = "1426337377"
 xively_timeout = 10
 logging.basicConfig(level=logging.INFO)
-"""
-xively_t = xively(feed_id, logging, timeout=xively_timeout, keyfile="api.key")
-xively_t.add_datapoint('wind',wind)
-xively_t.add_datapoint('temp',temp)
-xively_t.add_datapoint('clouds',clouds)
-xively_t.start()
-"""
-datastore_id = 13
-key = 'clouds'
-value = clouds
 
-cd = cursive_data(datastore_id)
-cd.add_datapoint(key, value)
-cd.start()
+use_xively = True
+
+if use_xively:
+  xively_t = xively(feed_id, logging, timeout=xively_timeout, keyfile="api.key")
+  xively_t.add_datapoint('wind',wind)
+  xively_t.add_datapoint('temp',temp)
+  xively_t.add_datapoint('clouds',clouds)
+  xively_t.start()
+else:
+  datastore_id = 13
+  key = 'clouds'
+  value = clouds
+
+  cd = cursive_data(datastore_id)
+  cd.add_datapoint(key, value)
+  cd.start()
+
+logging.info("done")
